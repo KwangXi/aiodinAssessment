@@ -1,19 +1,16 @@
 # aiodinAssessment
 
-Question 1:
-https://www.epcombb.org/mySchool/question1.html
+Question 1:https://www.epcombb.org/mySchool/question1.html
+
 *Sorry I cannot figure out the solution for this criterion: 
 If the user tries to download again within the 5 seconds waiting time, it should return a message "Too many downloads".
 
-Question 2:
-https://www.epcombb.org/mySchool/question2.html
+Question 2:https://www.epcombb.org/mySchool/question2.html
 
-Question 3:
+Question 3: https://www.epcombb.org/mySchool/api/1.0/aiodinAssessment/question3
 Use postman to test
-https://www.epcombb.org/mySchool/api/1.0/aiodinAssessment/question3
 
-Question 4: 
-https://www.epcombb.org/mySchool/question4.html
+Question 4: https://www.epcombb.org/mySchool/question4.html
 
 Question 5
 1.	No
