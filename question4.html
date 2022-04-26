@@ -1,0 +1,217 @@
+
+<html>
+    <head>
+     <title>Wallet</title>
+         <meta content='width=device-width, initial-scale=1' name='viewport'/>
+        <link rel="stylesheet" href=
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity=
+        "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous" type="text/css" />
+        <link rel="stylesheet" href=
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+        integrity=
+        "sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous" type="text/css" />
+        <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+    <style>
+    .error{
+            border: 1px solid red;
+
+        }
+
+        .required{
+            color:red;
+        }
+        .succ{
+            color:green;
+        }
+        body{
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+
+    </head>
+    <body style="background-color:whitesmoke">
+
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6 table-responsive" style="border: 10px solid #272a6f; padding: 10px">
+    <form name="form">
+        <span style="text-align: center;padding-bottom: 30px;">
+            <h2 ><strong>Wallet Transaction Simulation</strong></h2>
+            <h3 style="color:red; font-weight: 900" >Wallet Balance: <span id="wallet_balance_text">$1000</span><input type="hidden" name="wallet_balance" id="wallet_balance" value="1000"></h3>
+            <h3 style="color:red; font-weight: 900" >Bank Balance: <span id="bank_balance_text">$20.20</span><input type="hidden" name="bank_balance" id="bank_balance" value="20.20"></h3>
+        </span>
+
+
+
+      <table class="table-condensed" cellpadding="20" cellspacing="10" style="padding: 20px;">
+          <tr>
+              <td>Transaction Type: <span class="required">*</span></td>
+              <td>
+                  <select id="transactionType" placeholder="Transaction Type"  name="transactionType" >
+                      <option value="-" selected>-</option>
+                      <option value="1">Deposit</option>
+                      <option value="2">Withdrawal</option>
+                  </select>
+              </td>
+          </tr>
+          <tr id="depositClass" class="hidden">
+              <td>Deposit: <span class="required">*</span></td>
+              <td>
+                  <input type="number" placeholder="Deposit Amount" name="deposit" id="deposit">
+              </td>
+          </tr>
+          <tr id="withdrawClass"class="hidden">
+              <td>Withdrawal: <span class="required">*</span></td>
+              <td>
+                  <input type="number" placeholder="Withdraw Amount" name="withdraw" id="withdraw">
+              </td>
+          </tr>
+
+          <tr>
+              <td style="border-bottom:1px dotted grey; padding-top: 30px;" colspan="2"></td>
+          </tr>
+
+          <tr>
+            <td >
+                <h3 style="color:#faa51a; font-weight: 900" >Grand Total: <span id="grand_total">$0</span><input type="hidden" id="grand_total_text" name="grand_total_text"  value=""></h3>
+            </td>
+          </tr>
+      </table>
+        <button id="submitBtn" type="button" class="btn btn-primary" onClick="calculate()">Confirm</button>
+    </form>
+    </div>
+
+    <script>
+        $("document").ready(function(){
+            document.getElementById('transactionType').addEventListener('change', () => {
+                let option = document.getElementById("transactionType").value;
+
+                if(option === '1'){
+                    $("#depositClass").removeClass("hidden");
+                    $("#withdrawClass").addClass("hidden");
+                }else if(option === '2'){
+                    $("#withdrawClass").removeClass("hidden");
+                    $("#depositClass").addClass("hidden");
+                }
+
+            })
+
+            document.getElementById('deposit').addEventListener('change', () => {
+                var grandTotal = document.getElementById("deposit").value;
+
+                document.getElementById("grand_total").innerHTML="$"+ grandTotal;
+
+            })
+
+            document.getElementById('withdraw').addEventListener('change', () => {
+                var withdrawValue = document.getElementById("withdraw").value;
+                var bankAmount =  parseFloat(document.getElementById("bank_balance").value);
+                var error_msg="";
+
+
+                if(withdrawValue <200){
+                    error_msg+=("Minimum transaction value is $200\n");
+                    $('#withdraw').addClass("error");
+                    $("#submitBtn").prop('disabled', true);
+                }
+                else if(withdrawValue > bankAmount){
+                    error_msg+=("Not enough balance\n");
+                    $('#withdraw').addClass("error");
+                    $("#submitBtn").prop('disabled', true);
+                }
+                else{
+                    $('#withdraw').removeClass("error");
+                    $("#submitBtn").prop('disabled', false);
+                }
+                if(error_msg!==""){
+                    alert(error_msg);
+
+                }
+
+            })
+
+            document.getElementById('deposit').addEventListener('change', () => {
+                var depositValue = document.getElementById("deposit").value;
+                var walletAmount =  parseFloat(document.getElementById("wallet_balance").value);
+                var error_msg="";
+
+
+                if(depositValue <= 0){
+                    error_msg+=("Deposit value must be at least $1\n");
+                    $('#deposit').addClass("error");
+                    $("#submitBtn").prop('disabled', true);
+                }
+                else if(depositValue > walletAmount){
+                    error_msg+=("Not enough balance\n");
+                    $('#deposit').addClass("error");
+                    $("#submitBtn").prop('disabled', true);
+                }
+                else{
+                    $('#deposit').removeClass("error");
+                    $("#submitBtn").prop('disabled', false);
+                }
+
+                if(error_msg!==""){
+                    alert(error_msg);
+
+                }
+
+            })
+        })
+
+        function calculate() {
+            let option = document.getElementById("transactionType").value;
+            var walletAmount =  parseFloat(document.getElementById("wallet_balance").value)
+            var bankAmount =  parseFloat(document.getElementById("bank_balance").value)
+
+            // Deposit
+            if(option === '1'){
+                var depositAmount = parseFloat(document.getElementById("deposit").value);
+                var bonus = 0;
+
+                if(depositAmount >= 100){
+                    bonus = depositAmount*0.10;
+
+
+                    if(bonus >50){
+                        bonus = 50;
+                        bankAmount = (bankAmount + depositAmount + bonus) ;
+                        walletAmount = (walletAmount - depositAmount);
+
+                    }else{
+                        bankAmount = (bankAmount + depositAmount + bonus);
+                        walletAmount = (walletAmount - depositAmount);
+                    }
+                }
+                else if(depositAmount < 100){
+                    bankAmount = (bankAmount + depositAmount);
+                    walletAmount = (walletAmount - depositAmount);
+
+                }
+
+            }
+            // Withdrawal
+            else if(option === '2'){
+                var withdrawAmount = parseFloat(document.getElementById("withdraw").value);
+
+                bankAmount = (bankAmount - withdrawAmount) ;
+                walletAmount = (walletAmount + withdrawAmount);
+
+            }
+            document.getElementById("bank_balance_text").innerHTML="$"+bankAmount;
+            document.getElementById("wallet_balance_text").innerHTML="$"+walletAmount;
+            document.getElementById("bank_balance").value=bankAmount;
+            document.getElementById("wallet_balance").value=walletAmount;
+        }
+    </script>
+    </body>
+    </html>
+
+
+

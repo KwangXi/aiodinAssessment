@@ -1,0 +1,138 @@
+<html>
+<head>
+    <title>Question 1</title>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
+    <link rel="stylesheet" href=
+            "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity=
+                  "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous" type="text/css" />
+    <link rel="stylesheet" href=
+            "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity=
+                  "sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous" type="text/css" />
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+    <style>
+        .error{
+            border: 1px solid red;
+
+        }
+
+        .required{
+            color:red;
+        }
+        .succ{
+            color:green;
+        }
+        body{
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+
+</head>
+<body style="background-color:whitesmoke">
+
+<div class="col-lg-3"></div>
+<div class="col-lg-6 table-responsive" style="border: 10px solid #272a6f; padding: 10px">
+    <form name="form">
+        <span style="text-align: center;padding-bottom: 30px;">
+            <h2 ><strong>Question 1</strong></h2>
+        </span>
+
+
+
+        <table class="table-condensed" cellpadding="20" cellspacing="10" style="padding: 20px;">
+            <tr>
+                <td>Member Type: <span class="required">*</span></td>
+                <td>
+                    <select id="memberType" placeholder="Member Type"  name="memberType" >
+                        <option value="-" selected>-</option>
+                        <option value="1">Member</option>
+                        <option value="2">Non Member</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>File: <span class="required">*</span></td>
+                <td>
+                    <select id="fileType" placeholder="File Type"  name="fileType" >
+                        <option value="-" selected>-</option>
+                        <option value="1">jpeg</option>
+                        <option value="2">txt</option>
+                        <option value="3">pdf</option>
+                        <option value="4">doc</option>
+                        <option value="5">xls</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="border-bottom:1px dotted grey; padding-top: 30px;" colspan="2"></td>
+            </tr>
+
+        </table>
+        </br>
+        <button id="submitBtn" type="button" class="btn btn-primary" onClick="download()">Download</button>
+
+        </br>
+        <h3 style="color:red; font-weight: 900" >Result: <span id="result"></span></h3>
+        <h3 style="color:limegreen; font-weight: 900" ><span id="resultDone"></span></h3>
+    </form>
+</div>
+
+<script>
+    $("document").ready(function(){
+        var numberOfClicks = 0;
+
+        document.getElementById('submitBtn').addEventListener("click", function() {
+            var memberType = document.getElementById("memberType").value;
+            var fileType = document.getElementById("fileType").value;
+
+            numberOfClicks += 1;
+
+            //non member
+            if(memberType === '2'){
+                document.getElementById("result").innerHTML+= "<br> Download " + numberOfClicks + " : Your download is starting....";
+                setTimeout(function(){
+                    document.getElementById("resultDone").innerHTML+="<br> Download " + numberOfClicks + " done";
+
+                }, 5000);
+            }
+            //member
+            else if(memberType === '1'){
+                //jpeg file
+                if(fileType === '1'){
+                    //more than 2 clicks, wait 5 s
+                    if(numberOfClicks >2){
+                        document.getElementById("result").innerHTML+= "<br> Download " + numberOfClicks + " : Your download is starting....";
+                        setTimeout(function(){
+                            document.getElementById("resultDone").innerHTML+="<br> Download " + numberOfClicks + " done";
+                        }, 5000);
+                    //no need wait 5s
+                    }else{
+                        document.getElementById("result").innerHTML+= "<br> Download " + numberOfClicks + " : Your download is starting....";
+                        document.getElementById("resultDone").innerHTML+="<br> Download " + numberOfClicks + " done";
+                    }
+                //other files, not jpeg
+                }else{
+                    document.getElementById("result").innerHTML+= "<br> Download " + numberOfClicks + " : Your download is starting....";
+                    setTimeout(function(){
+                        document.getElementById("resultDone").innerHTML+="<br> Download " + numberOfClicks + " done";
+                    }, 5000);
+                }
+            }
+
+        })
+    })
+
+</script>
+</body>
+</html>
+
+
+
